@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package brigade.docker.v1;
+
+import "common/v1/common.proto";
+
+option go_package = "brigade/internal/gen/plugins/v1/docker";
+
+// BrigadeDockerPluginService provides a way to talk to brigade server
+service BrigadeDockerPluginService {
+  rpc Execute(common.v1.ExecuteRequest) returns (common.v1.ExecuteResponse) {}
+  rpc Logs(common.v1.LogsRequest) returns (stream common.v1.LogsResponse) {}
+  rpc Events(common.v1.EventsRequest) returns (stream common.v1.EventsResponse) {}
+  rpc Status(common.v1.StatusRequest) returns (common.v1.StatusResponse) {}
+}

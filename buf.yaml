@@ -1,0 +1,16 @@
+version: v2
+lint:
+  use:
+    - STANDARD
+    - TIMESTAMP_SUFFIX
+breaking:
+  use:
+    - FILE
+plugins:
+  - plugin: plugin-timestamp-suffix 
+    options:
+      timestamp_suffix: _timestamp
+modules:
+  - path: idl
+    name: buf.build/y-bruin/brigade
+    

@@ -1,0 +1,48 @@
+
+syntax = "proto3";
+
+package brigade.common.v1;
+
+option go_package = "brigade/internal/gen/common/v1";
+
+// Define the ExecuteRequest message
+message ExecuteRequest {
+    string command = 1; // Command to execute
+    repeated string args = 2; // Arguments for the command
+  }
+  
+  // Define the ExecuteResponse message
+  message ExecuteResponse {
+    string output = 1; // Output of the executed command
+    int32 exit_code = 2; // Exit code of the command
+  }
+  
+  // Define the LogsRequest message
+  message LogsRequest {
+    string job_id = 1; // ID of the job to fetch logs for
+  }
+  
+  // Define the LogsResponse message
+  message LogsResponse {
+    string log = 1; // Log output
+  }
+  
+  // Define the EventsRequest message
+  message EventsRequest {
+    string job_id = 1; // ID of the job to fetch events for
+  }
+  
+  // Define the EventsResponse message
+  message EventsResponse {
+    string event = 1; // Event data
+  }
+  
+  // Define the StatusRequest message
+  message StatusRequest {
+    string job_id = 1; // ID of the job to check status for
+  }
+  
+  // Define the StatusResponse message
+  message StatusResponse {
+    string status = 1; // Status of the job
+  }
