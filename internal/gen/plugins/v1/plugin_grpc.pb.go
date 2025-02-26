@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: plugins/v1/plugin.proto
 
-package docker
+package v1
 
 import (
 	v1 "brigade/internal/gen/common/v1"

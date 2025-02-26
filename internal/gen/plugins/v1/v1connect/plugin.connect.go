@@ -2,11 +2,11 @@
 //
 // Source: plugins/v1/plugin.proto
 
-package dockerconnect
+package v1connect
 
 import (
 	v1 "brigade/internal/gen/common/v1"
-	docker "brigade/internal/gen/plugins/v1/docker"
+	v11 "brigade/internal/gen/plugins/v1"
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
@@ -65,7 +65,7 @@ type BrigadePluginServiceClient interface {
 // http://api.acme.com or https://acme.com/grpc).
 func NewBrigadePluginServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) BrigadePluginServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	brigadePluginServiceMethods := docker.File_plugins_v1_plugin_proto.Services().ByName("BrigadePluginService").Methods()
+	brigadePluginServiceMethods := v11.File_plugins_v1_plugin_proto.Services().ByName("BrigadePluginService").Methods()
 	return &brigadePluginServiceClient{
 		execute: connect.NewClient[v1.ExecuteRequest, v1.ExecuteResponse](
 			httpClient,
@@ -137,7 +137,7 @@ type BrigadePluginServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewBrigadePluginServiceHandler(svc BrigadePluginServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	brigadePluginServiceMethods := docker.File_plugins_v1_plugin_proto.Services().ByName("BrigadePluginService").Methods()
+	brigadePluginServiceMethods := v11.File_plugins_v1_plugin_proto.Services().ByName("BrigadePluginService").Methods()
 	brigadePluginServiceExecuteHandler := connect.NewUnaryHandler(
 		BrigadePluginServiceExecuteProcedure,
 		svc.Execute,

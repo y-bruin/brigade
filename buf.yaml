@@ -13,4 +13,6 @@ plugins:
 modules:
   - path: idl
     name: buf.build/y-bruin/brigade
-    
+deps:
+  - buf.build/googleapis/googleapis
+

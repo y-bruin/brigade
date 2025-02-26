@@ -4,7 +4,7 @@ package brigade.plugin.v1;
 
 import "common/v1/common.proto";
 
-option go_package = "brigade/internal/gen/plugins/v1/docker";
+option go_package = "brigade/internal/gen/plugins/v1";
 
 // BrigadePluginService provides a way to talk to brigade server
 service BrigadePluginService {

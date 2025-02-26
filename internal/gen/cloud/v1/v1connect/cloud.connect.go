@@ -33,9 +33,6 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// BrigadeCloudServiceSubscribeProcedure is the fully-qualified name of the BrigadeCloudService's
-	// Subscribe RPC.
-	BrigadeCloudServiceSubscribeProcedure = "/brigade.cloud.v1.BrigadeCloudService/Subscribe"
 	// BrigadeCloudServiceHeartbeatProcedure is the fully-qualified name of the BrigadeCloudService's
 	// Heartbeat RPC.
 	BrigadeCloudServiceHeartbeatProcedure = "/brigade.cloud.v1.BrigadeCloudService/Heartbeat"
@@ -49,7 +46,6 @@ const (
 
 // BrigadeCloudServiceClient is a client for the brigade.cloud.v1.BrigadeCloudService service.
 type BrigadeCloudServiceClient interface {
-	Subscribe(context.Context) *connect.BidiStreamForClient[v1.SubscribeRequest, v1.SubscribeResponse]
 	Heartbeat(context.Context, *connect.Request[v1.HeartbeatRequest]) (*connect.Response[v1.HeartbeatResponse], error)
 	Events(context.Context, *connect.Request[v1.EventsRequest]) (*connect.Response[v1.EventsResponse], error)
 	Logs(context.Context, *connect.Request[v1.LogsRequest]) (*connect.Response[v1.LogsResponse], error)
@@ -66,12 +62,6 @@ func NewBrigadeCloudServiceClient(httpClient connect.HTTPClient, baseURL string,
 	baseURL = strings.TrimRight(baseURL, "/")
 	brigadeCloudServiceMethods := v1.File_cloud_v1_cloud_proto.Services().ByName("BrigadeCloudService").Methods()
 	return &brigadeCloudServiceClient{
-		subscribe: connect.NewClient[v1.SubscribeRequest, v1.SubscribeResponse](
-			httpClient,
-			baseURL+BrigadeCloudServiceSubscribeProcedure,
-			connect.WithSchema(brigadeCloudServiceMethods.ByName("Subscribe")),
-			connect.WithClientOptions(opts...),
-		),
 		heartbeat: connect.NewClient[v1.HeartbeatRequest, v1.HeartbeatResponse](
 			httpClient,
 			baseURL+BrigadeCloudServiceHeartbeatProcedure,
@@ -95,15 +85,9 @@ func NewBrigadeCloudServiceClient(httpClient connect.HTTPClient, baseURL string,
 
 // brigadeCloudServiceClient implements BrigadeCloudServiceClient.
 type brigadeCloudServiceClient struct {
-	subscribe *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
 	heartbeat *connect.Client[v1.HeartbeatRequest, v1.HeartbeatResponse]
 	events    *connect.Client[v1.EventsRequest, v1.EventsResponse]
 	logs      *connect.Client[v1.LogsRequest, v1.LogsResponse]
-}
-
-// Subscribe calls brigade.cloud.v1.BrigadeCloudService.Subscribe.
-func (c *brigadeCloudServiceClient) Subscribe(ctx context.Context) *connect.BidiStreamForClient[v1.SubscribeRequest, v1.SubscribeResponse] {
-	return c.subscribe.CallBidiStream(ctx)
 }
 
 // Heartbeat calls brigade.cloud.v1.BrigadeCloudService.Heartbeat.
@@ -124,7 +108,6 @@ func (c *brigadeCloudServiceClient) Logs(ctx context.Context, req *connect.Reque
 // BrigadeCloudServiceHandler is an implementation of the brigade.cloud.v1.BrigadeCloudService
 // service.
 type BrigadeCloudServiceHandler interface {
-	Subscribe(context.Context, *connect.BidiStream[v1.SubscribeRequest, v1.SubscribeResponse]) error
 	Heartbeat(context.Context, *connect.Request[v1.HeartbeatRequest]) (*connect.Response[v1.HeartbeatResponse], error)
 	Events(context.Context, *connect.Request[v1.EventsRequest]) (*connect.Response[v1.EventsResponse], error)
 	Logs(context.Context, *connect.Request[v1.LogsRequest]) (*connect.Response[v1.LogsResponse], error)
@@ -137,12 +120,6 @@ type BrigadeCloudServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewBrigadeCloudServiceHandler(svc BrigadeCloudServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	brigadeCloudServiceMethods := v1.File_cloud_v1_cloud_proto.Services().ByName("BrigadeCloudService").Methods()
-	brigadeCloudServiceSubscribeHandler := connect.NewBidiStreamHandler(
-		BrigadeCloudServiceSubscribeProcedure,
-		svc.Subscribe,
-		connect.WithSchema(brigadeCloudServiceMethods.ByName("Subscribe")),
-		connect.WithHandlerOptions(opts...),
-	)
 	brigadeCloudServiceHeartbeatHandler := connect.NewUnaryHandler(
 		BrigadeCloudServiceHeartbeatProcedure,
 		svc.Heartbeat,
@@ -163,8 +140,6 @@ func NewBrigadeCloudServiceHandler(svc BrigadeCloudServiceHandler, opts ...conne
 	)
 	return "/brigade.cloud.v1.BrigadeCloudService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case BrigadeCloudServiceSubscribeProcedure:
-			brigadeCloudServiceSubscribeHandler.ServeHTTP(w, r)
 		case BrigadeCloudServiceHeartbeatProcedure:
 			brigadeCloudServiceHeartbeatHandler.ServeHTTP(w, r)
 		case BrigadeCloudServiceEventsProcedure:
@@ -179,10 +154,6 @@ func NewBrigadeCloudServiceHandler(svc BrigadeCloudServiceHandler, opts ...conne
 
 // UnimplementedBrigadeCloudServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedBrigadeCloudServiceHandler struct{}
-
-func (UnimplementedBrigadeCloudServiceHandler) Subscribe(context.Context, *connect.BidiStream[v1.SubscribeRequest, v1.SubscribeResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("brigade.cloud.v1.BrigadeCloudService.Subscribe is not implemented"))
-}
 
 func (UnimplementedBrigadeCloudServiceHandler) Heartbeat(context.Context, *connect.Request[v1.HeartbeatRequest]) (*connect.Response[v1.HeartbeatResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brigade.cloud.v1.BrigadeCloudService.Heartbeat is not implemented"))

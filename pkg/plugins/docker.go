@@ -1,4 +1,4 @@
-package docker
+package plugins
 
 import (
 	"context"
@@ -12,16 +12,11 @@ import (
 	"github.com/docker/docker/pkg/stdcopy"
 )
 
-const (
-	PluginName = "docker"
-	Version    = "v1"
-)
-
 type DockerPluginServer struct {
 	client *client.Client
 }
 
-func NewDockerPluginServer() *DockerPluginServer {
+func NewDockerPluginServer() PluginServerInterface {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		panic(err)

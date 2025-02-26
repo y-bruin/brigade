@@ -2,8 +2,6 @@ package plugins
 
 import (
 	common "brigade/internal/gen/common/v1"
-	"brigade/pkg/plugins/docker"
-	"brigade/pkg/plugins/k8s"
 	"context"
 )
 
@@ -17,9 +15,9 @@ type PluginServerInterface interface {
 func NewPluginServer(pluginName string) PluginServerInterface {
 	switch pluginName {
 	case "docker":
-		return docker.NewDockerPluginServer()
+		return NewDockerPluginServer()
 	case "k8s":
-		return k8s.NewK8sPluginServer()
+		return NewK8sPluginServer()
 	default:
 		return nil
 	}

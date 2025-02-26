@@ -19,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BrigadeCloudService_Subscribe_FullMethodName = "/brigade.cloud.v1.BrigadeCloudService/Subscribe"
 	BrigadeCloudService_Heartbeat_FullMethodName = "/brigade.cloud.v1.BrigadeCloudService/Heartbeat"
 	BrigadeCloudService_Events_FullMethodName    = "/brigade.cloud.v1.BrigadeCloudService/Events"
 	BrigadeCloudService_Logs_FullMethodName      = "/brigade.cloud.v1.BrigadeCloudService/Logs"
@@ -31,7 +30,6 @@ const (
 //
 // BrigadeCloudService provides a way to talk to brigade server
 type BrigadeCloudServiceClient interface {
-	Subscribe(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SubscribeRequest, SubscribeResponse], error)
 	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
 	Events(ctx context.Context, in *EventsRequest, opts ...grpc.CallOption) (*EventsResponse, error)
 	Logs(ctx context.Context, in *LogsRequest, opts ...grpc.CallOption) (*LogsResponse, error)
@@ -44,19 +42,6 @@ type brigadeCloudServiceClient struct {
 func NewBrigadeCloudServiceClient(cc grpc.ClientConnInterface) BrigadeCloudServiceClient {
 	return &brigadeCloudServiceClient{cc}
 }
-
-func (c *brigadeCloudServiceClient) Subscribe(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SubscribeRequest, SubscribeResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &BrigadeCloudService_ServiceDesc.Streams[0], BrigadeCloudService_Subscribe_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[SubscribeRequest, SubscribeResponse]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type BrigadeCloudService_SubscribeClient = grpc.BidiStreamingClient[SubscribeRequest, SubscribeResponse]
 
 func (c *brigadeCloudServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -94,7 +79,6 @@ func (c *brigadeCloudServiceClient) Logs(ctx context.Context, in *LogsRequest, o
 //
 // BrigadeCloudService provides a way to talk to brigade server
 type BrigadeCloudServiceServer interface {
-	Subscribe(grpc.BidiStreamingServer[SubscribeRequest, SubscribeResponse]) error
 	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
 	Events(context.Context, *EventsRequest) (*EventsResponse, error)
 	Logs(context.Context, *LogsRequest) (*LogsResponse, error)
@@ -108,9 +92,6 @@ type BrigadeCloudServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBrigadeCloudServiceServer struct{}
 
-func (UnimplementedBrigadeCloudServiceServer) Subscribe(grpc.BidiStreamingServer[SubscribeRequest, SubscribeResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
-}
 func (UnimplementedBrigadeCloudServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Heartbeat not implemented")
 }
@@ -140,13 +121,6 @@ func RegisterBrigadeCloudServiceServer(s grpc.ServiceRegistrar, srv BrigadeCloud
 	}
 	s.RegisterService(&BrigadeCloudService_ServiceDesc, srv)
 }
-
-func _BrigadeCloudService_Subscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(BrigadeCloudServiceServer).Subscribe(&grpc.GenericServerStream[SubscribeRequest, SubscribeResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type BrigadeCloudService_SubscribeServer = grpc.BidiStreamingServer[SubscribeRequest, SubscribeResponse]
 
 func _BrigadeCloudService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HeartbeatRequest)
@@ -222,13 +196,6 @@ var BrigadeCloudService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BrigadeCloudService_Logs_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "Subscribe",
-			Handler:       _BrigadeCloudService_Subscribe_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "cloud/v1/cloud.proto",
 }

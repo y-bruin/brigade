@@ -6,37 +6,13 @@ option go_package = "brigade/internal/gen/cloud/v1";
 
 // BrigadeCloudService provides a way to talk to brigade server
 service BrigadeCloudService {
-  rpc Subscribe(stream SubscribeRequest) returns (stream SubscribeResponse) {}
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {}
   rpc Events(EventsRequest) returns (EventsResponse) {}
   rpc Logs(LogsRequest) returns (LogsResponse) {}
 }
 
-message SubscribeRequest {
-  RequestType request_type = 1;
-  Payload payload = 2;
-}
-
-message TaskRequest {
-  Payload payload = 1;
-}
-
-message RequestType {
-  enum Type {
-    TASK = 0;
-  }
-  Type type = 1;
-}
-
 message Payload {
-  oneof event_data {
-    TaskRequest task = 2;
-  }
-}
-
-message SubscribeResponse {
-  RequestType request_type = 1;
-  Payload payload = 2;
+  string sentence = 1;
 }
 
 message HeartbeatRequest {
@@ -60,13 +36,5 @@ message EventsRequest {
 }
 
 message EventsResponse {
-  string sentence = 1;
-}
-
-message StatusRequest {
-  string sentence = 1;
-}
-
-message StatusResponse {
   string sentence = 1;
 }

@@ -5,11 +5,17 @@ package brigade.common.v1;
 
 option go_package = "brigade/internal/gen/common/v1";
 
+
+message Message {
+    string job_id = 1; // ID of the job to fetch logs for
+    string plugin_name = 2; // Name of the plugin to execute
+    bytes message = 3; // Message to send
+}
+
 // Define the ExecuteRequest message
 message ExecuteRequest {
-    string command = 1; // Command to execute
-    repeated string args = 2; // Arguments for the command
-  }
+    Message message = 1;
+}
   
   // Define the ExecuteResponse message
   message ExecuteResponse {
