@@ -9,6 +9,8 @@ import (
 
 	v1 "brigade/internal/gen/cloud/v1"
 	cloudv1connect "brigade/internal/gen/cloud/v1/v1connect"
+	common "brigade/internal/gen/common/v1"
+	plugins "brigade/pkg/plugins"
 )
 
 func main() {
@@ -20,6 +22,7 @@ func main() {
 		"The duration to delay sending responses on the server stream.",
 	)
 	pflag.Parse()
+	inter := "docker"
 
 	if *helpArg {
 		pflag.PrintDefaults()
@@ -44,11 +47,15 @@ func main() {
 			return
 		}
 
-		log.Printf("Received message: %v", msg)
+		if msg.RequestType.Type == v1.RequestType_TASK {
 
-		err = stream.Send(&v1.SubscribeRequest{})
-		if err != nil {
-			return
+			plugin := plugins.NewPluginServer(inter)
+			resp, err := plugin.Execute(context.Background(), &common.ExecuteRequest{})
+			if err != nil {
+				log.Printf("Error executing task: %v", err)
+				return
+			}
+			log.Printf("Received message: %v", resp.Output)
 		}
 	}
 }

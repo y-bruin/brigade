@@ -35,7 +35,8 @@ message Payload {
 }
 
 message SubscribeResponse {
-  string sentence = 1;
+  RequestType request_type = 1;
+  Payload payload = 2;
 }
 
 message HeartbeatRequest {

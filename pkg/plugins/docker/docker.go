@@ -26,7 +26,6 @@ func NewDockerPluginServer() *DockerPluginServer {
 	if err != nil {
 		panic(err)
 	}
-
 	return &DockerPluginServer{
 		client: cli,
 	}

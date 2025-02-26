@@ -60,7 +60,7 @@ func (e *BrigadeCloudServer) Subscribe(
 			return fmt.Errorf("receive request: %w", err)
 		}
 		fmt.Println(request.RequestType.Type)
-		if err := stream.Send(&cloudv1.SubscribeResponse{Sentence: request.RequestType.String()}); err != nil {
+		if err := stream.Send(&cloudv1.SubscribeResponse{}); err != nil {
 			return fmt.Errorf("send response: %w", err)
 		}
 	}
