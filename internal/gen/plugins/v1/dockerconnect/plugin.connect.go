@@ -23,7 +23,7 @@ const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// BrigadePluginServiceName is the fully-qualified name of the BrigadePluginService service.
-	BrigadePluginServiceName = "brigade.docker.v1.BrigadePluginService"
+	BrigadePluginServiceName = "brigade.plugin.v1.BrigadePluginService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -36,19 +36,19 @@ const (
 const (
 	// BrigadePluginServiceExecuteProcedure is the fully-qualified name of the BrigadePluginService's
 	// Execute RPC.
-	BrigadePluginServiceExecuteProcedure = "/brigade.docker.v1.BrigadePluginService/Execute"
+	BrigadePluginServiceExecuteProcedure = "/brigade.plugin.v1.BrigadePluginService/Execute"
 	// BrigadePluginServiceLogsProcedure is the fully-qualified name of the BrigadePluginService's Logs
 	// RPC.
-	BrigadePluginServiceLogsProcedure = "/brigade.docker.v1.BrigadePluginService/Logs"
+	BrigadePluginServiceLogsProcedure = "/brigade.plugin.v1.BrigadePluginService/Logs"
 	// BrigadePluginServiceEventsProcedure is the fully-qualified name of the BrigadePluginService's
 	// Events RPC.
-	BrigadePluginServiceEventsProcedure = "/brigade.docker.v1.BrigadePluginService/Events"
+	BrigadePluginServiceEventsProcedure = "/brigade.plugin.v1.BrigadePluginService/Events"
 	// BrigadePluginServiceStatusProcedure is the fully-qualified name of the BrigadePluginService's
 	// Status RPC.
-	BrigadePluginServiceStatusProcedure = "/brigade.docker.v1.BrigadePluginService/Status"
+	BrigadePluginServiceStatusProcedure = "/brigade.plugin.v1.BrigadePluginService/Status"
 )
 
-// BrigadePluginServiceClient is a client for the brigade.docker.v1.BrigadePluginService service.
+// BrigadePluginServiceClient is a client for the brigade.plugin.v1.BrigadePluginService service.
 type BrigadePluginServiceClient interface {
 	Execute(context.Context, *connect.Request[v1.ExecuteRequest]) (*connect.Response[v1.ExecuteResponse], error)
 	Logs(context.Context, *connect.Request[v1.LogsRequest]) (*connect.ServerStreamForClient[v1.LogsResponse], error)
@@ -56,7 +56,7 @@ type BrigadePluginServiceClient interface {
 	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
 }
 
-// NewBrigadePluginServiceClient constructs a client for the brigade.docker.v1.BrigadePluginService
+// NewBrigadePluginServiceClient constructs a client for the brigade.plugin.v1.BrigadePluginService
 // service. By default, it uses the Connect protocol with the binary Protobuf Codec, asks for
 // gzipped responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply
 // the connect.WithGRPC() or connect.WithGRPCWeb() options.
@@ -102,27 +102,27 @@ type brigadePluginServiceClient struct {
 	status  *connect.Client[v1.StatusRequest, v1.StatusResponse]
 }
 
-// Execute calls brigade.docker.v1.BrigadePluginService.Execute.
+// Execute calls brigade.plugin.v1.BrigadePluginService.Execute.
 func (c *brigadePluginServiceClient) Execute(ctx context.Context, req *connect.Request[v1.ExecuteRequest]) (*connect.Response[v1.ExecuteResponse], error) {
 	return c.execute.CallUnary(ctx, req)
 }
 
-// Logs calls brigade.docker.v1.BrigadePluginService.Logs.
+// Logs calls brigade.plugin.v1.BrigadePluginService.Logs.
 func (c *brigadePluginServiceClient) Logs(ctx context.Context, req *connect.Request[v1.LogsRequest]) (*connect.ServerStreamForClient[v1.LogsResponse], error) {
 	return c.logs.CallServerStream(ctx, req)
 }
 
-// Events calls brigade.docker.v1.BrigadePluginService.Events.
+// Events calls brigade.plugin.v1.BrigadePluginService.Events.
 func (c *brigadePluginServiceClient) Events(ctx context.Context, req *connect.Request[v1.EventsRequest]) (*connect.ServerStreamForClient[v1.EventsResponse], error) {
 	return c.events.CallServerStream(ctx, req)
 }
 
-// Status calls brigade.docker.v1.BrigadePluginService.Status.
+// Status calls brigade.plugin.v1.BrigadePluginService.Status.
 func (c *brigadePluginServiceClient) Status(ctx context.Context, req *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
 	return c.status.CallUnary(ctx, req)
 }
 
-// BrigadePluginServiceHandler is an implementation of the brigade.docker.v1.BrigadePluginService
+// BrigadePluginServiceHandler is an implementation of the brigade.plugin.v1.BrigadePluginService
 // service.
 type BrigadePluginServiceHandler interface {
 	Execute(context.Context, *connect.Request[v1.ExecuteRequest]) (*connect.Response[v1.ExecuteResponse], error)
@@ -162,7 +162,7 @@ func NewBrigadePluginServiceHandler(svc BrigadePluginServiceHandler, opts ...con
 		connect.WithSchema(brigadePluginServiceMethods.ByName("Status")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/brigade.docker.v1.BrigadePluginService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/brigade.plugin.v1.BrigadePluginService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BrigadePluginServiceExecuteProcedure:
 			brigadePluginServiceExecuteHandler.ServeHTTP(w, r)
@@ -182,17 +182,17 @@ func NewBrigadePluginServiceHandler(svc BrigadePluginServiceHandler, opts ...con
 type UnimplementedBrigadePluginServiceHandler struct{}
 
 func (UnimplementedBrigadePluginServiceHandler) Execute(context.Context, *connect.Request[v1.ExecuteRequest]) (*connect.Response[v1.ExecuteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brigade.docker.v1.BrigadePluginService.Execute is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brigade.plugin.v1.BrigadePluginService.Execute is not implemented"))
 }
 
 func (UnimplementedBrigadePluginServiceHandler) Logs(context.Context, *connect.Request[v1.LogsRequest], *connect.ServerStream[v1.LogsResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("brigade.docker.v1.BrigadePluginService.Logs is not implemented"))
+	return connect.NewError(connect.CodeUnimplemented, errors.New("brigade.plugin.v1.BrigadePluginService.Logs is not implemented"))
 }
 
 func (UnimplementedBrigadePluginServiceHandler) Events(context.Context, *connect.Request[v1.EventsRequest], *connect.ServerStream[v1.EventsResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("brigade.docker.v1.BrigadePluginService.Events is not implemented"))
+	return connect.NewError(connect.CodeUnimplemented, errors.New("brigade.plugin.v1.BrigadePluginService.Events is not implemented"))
 }
 
 func (UnimplementedBrigadePluginServiceHandler) Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brigade.docker.v1.BrigadePluginService.Status is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brigade.plugin.v1.BrigadePluginService.Status is not implemented"))
 }

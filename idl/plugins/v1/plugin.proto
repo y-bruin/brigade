@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package brigade.docker.v1;
+package brigade.plugin.v1;
 
 import "common/v1/common.proto";
 

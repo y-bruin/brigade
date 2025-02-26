@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BrigadePluginService_Execute_FullMethodName = "/brigade.docker.v1.BrigadePluginService/Execute"
-	BrigadePluginService_Logs_FullMethodName    = "/brigade.docker.v1.BrigadePluginService/Logs"
-	BrigadePluginService_Events_FullMethodName  = "/brigade.docker.v1.BrigadePluginService/Events"
-	BrigadePluginService_Status_FullMethodName  = "/brigade.docker.v1.BrigadePluginService/Status"
+	BrigadePluginService_Execute_FullMethodName = "/brigade.plugin.v1.BrigadePluginService/Execute"
+	BrigadePluginService_Logs_FullMethodName    = "/brigade.plugin.v1.BrigadePluginService/Logs"
+	BrigadePluginService_Events_FullMethodName  = "/brigade.plugin.v1.BrigadePluginService/Events"
+	BrigadePluginService_Status_FullMethodName  = "/brigade.plugin.v1.BrigadePluginService/Status"
 )
 
 // BrigadePluginServiceClient is the client API for BrigadePluginService service.
@@ -219,7 +219,7 @@ func _BrigadePluginService_Status_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var BrigadePluginService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "brigade.docker.v1.BrigadePluginService",
+	ServiceName: "brigade.plugin.v1.BrigadePluginService",
 	HandlerType: (*BrigadePluginServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
